@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+
+Dio dio = Dio();
+
 
 void main() {
   runApp(const MainApp());
@@ -7,12 +11,27 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  void getData(String url) async {
+    try {
+      final response = await dio.get(url);
+      print(response);
+
+    } on DioException catch(e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
+          child: ElevatedButton(
+            child: Text('Fetch data'),
+            onPressed: () {
+              getData('https://reqres.in/api/users?page=1');
+            },
+          ),
         ),
       ),
     );
