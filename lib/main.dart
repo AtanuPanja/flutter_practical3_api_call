@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
+// initializing dio object
+// dio will be used for the network call
 Dio dio = Dio();
 
 void main() {
@@ -32,16 +34,18 @@ class ListOfData extends StatefulWidget {
 }
 
 class _ListOfDataState extends State<ListOfData> {
+  // state variable marked as late which will be updated with the list of data
   late List<dynamic> listOfData;
 
   void getData(String url) async {
+    // defining Response type variable, to store the response from the network call
     Response response;
 
     try {
+      // getting the data using get method
       response = await dio.get(url);
       // print(response.data);
       listOfData = response.data["data"];
-      print(listOfData);
       setState(() {});
     } on DioException catch (e) {
       print(e);
@@ -53,8 +57,11 @@ class _ListOfDataState extends State<ListOfData> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // initializing the listOfData variable with empty list
     listOfData = [{}];
 
+    // calling getData when state is initialized, to make sure the data gets populated onto the UI
     getData('https://reqres.in/api/users?page=1');
   }
 
